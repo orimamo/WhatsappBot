@@ -44,7 +44,7 @@ public class Main extends JFrame {
             driver.get("https://web.whatsapp.com/");
             driver.manage().window().maximize();
             if (driver.findElement(By.className("landing-wrapper")).isDisplayed()){
-                System.out.println("good");
+                System.out.println("`good`");
             }
 
 
