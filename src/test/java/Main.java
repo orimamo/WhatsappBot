@@ -33,39 +33,8 @@ public class Main extends JFrame {
         this.setVisible(true);
         this.add(workPanel);
         this.setSize(WIDTH, HEIGHT);
-
-
-        JButton jButton = new JButton();
-        Color color=new Color(200,200,200);
-        jButton.setBackground(color);
-        jButton.setVisible(true);
-        this.add(jButton);
-        jButton.setBounds(0,0,100,50);
-
-        jButton.addActionListener((event)->{
-            actionPerformed(event);
-        });
-
-
-
     }
-    private static void actionPerformed(ActionEvent event) {
-        System.setProperty("webdriver.chrome.driver", "C:\\Users\\mori8\\Downloads\\chromedriver_win32\\chromedriver.exe");
-        ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("C:\\Users\\mori8\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 1");
-        ChromeDriver driver = new ChromeDriver();
-        driver.get("https://web.whatsapp.com/");
-        driver.manage().window().maximize();
-        boolean isConnected = false;
-        while (!isConnected) {
-            List<WebElement> sss = driver.findElements(By.id("side"));
-            if (sss.isEmpty()) {
-            } else {
-                System.out.println("you are in");
-                isConnected = true;
-            }
-        }
-    }
+
     public void run(String s1,String s2){
         new Thread(()->{
             this.setFocusable(true);
