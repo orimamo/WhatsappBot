@@ -67,9 +67,9 @@ public class WorkPanel extends JPanel {
     }
 
     private void actionPerformed(ActionEvent event) {
-        System.setProperty("webdriver.chrome.driver", "C:\\Users\\ADMIN\\Downloads\\chromedriver_win32\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "C:\\Users\\ADMIN\\Downloads\\chromedriver_win32 (1)\\chromedriver.exe");
         ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("C:\\Users\\mori8\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 1");
+        chromeOptions.addArguments("C:\\Users\\ADMIN\\AppData\\Local\\Temp\\scoped_dir11132_1172441705\\Default");
         ChromeDriver driver = new ChromeDriver();
         driver.get("https://web.whatsapp.com/");
         driver.manage().window().maximize();
@@ -89,7 +89,7 @@ public class WorkPanel extends JPanel {
 
     public void afterConnection (boolean isConnected, ChromeDriver driver) {
         if (isConnected){
-            driver.navigate().to("https://api.whatsapp.com/send?phone=972504730464");
+            driver.navigate().to("https://api.whatsapp.com/send?phone=" + phoneNumber.getText());
         }
     }
 
