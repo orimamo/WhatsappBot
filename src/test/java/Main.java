@@ -34,22 +34,4 @@ public class Main extends JFrame {
         this.add(workPanel);
         this.setSize(WIDTH, HEIGHT);
     }
-
-    public void run(String s1,String s2){
-        new Thread(()->{
-            this.setFocusable(true);
-            this.requestFocus();
-            while (true){ //
-                try {
-
-                    Thread.sleep(1);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                repaint();
-            }
-        }).start();
-
-    }
-
 }
