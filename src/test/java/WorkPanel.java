@@ -137,31 +137,58 @@ public class WorkPanel extends JPanel {
     }
 
     public void msgCheck (ChromeDriver driver){
-//        new Thread()
-        boolean msgCheck = false;
-        boolean msgWasRead = false;
-        List<WebElement> messageCheck = driver.findElements(By.className("_3K4-L"));
-        WebElement webElement=messageCheck.get(messageCheck.size()-1);
-        String className=webElement.getAttribute("class");
-//        String value=webElement.getAttribute("aria-label");
-        while (!msgWasRead){
-            if(value.equals("נמסרה")){
-                valueLabel.setText("has delivered");
-                valueLabel.setVisible(true);
-            }
-            else if (value.equals("נשלחה")){
-                valueLabel.setText("has sent");
-                valueLabel.setVisible(true);
-            }
-            else {
-                if (value.equals("נקראה")) {
-                System.out.println("done");
-                msgWasRead=true;
-                }
-            }
-        }
+        new Thread(()->
+        {
+          boolean msgCheck = false;
+          boolean msgWasRead = false;
+          List<WebElement> lastMsg1=lastMsg(driver);
+          int sizeOfList=lastMsg1.size();
+          String value="";
+            value=lastMsg1.get(lastMsg1.size()-1).findElement(By.cssSelector("span[data-testid='msg-dblcheck']")).getAttribute("aria-label");
+            while (!msgWasRead){
+              if(value.equals(" נמסרה ")){
+//                  valueLabel.setText("has delivered");
+//                  valueLabel.setVisible(true);
+                  System.out.println("done1");
+              }
+              else if (value.equals(" נשלחה ")){
+//                  valueLabel.setText("has sent");
+//                  valueLabel.setVisible(true);
+                  System.out.println("done2");
+              }
+              else {
+                  if (value.equals(" נקראה ")) {
+                      System.out.println("done3");
+                      msgWasRead=true;
+                  }
+              }
+          }
+          try {
+              List<WebElement> lastMsg2=lastMsg(driver);
+              while (msgWasRead) {
+                  Thread.sleep(10000);
+                  if (lastMsg2.size() - sizeOfList >= 1) {
+                      JOptionPane.showMessageDialog(null,
+                              "new massage received",
+                              "new massage received",
+                              JOptionPane.INFORMATION_MESSAGE);
+                      driver.close();
+                      break;
+                  }
+
+              }
+          }catch (Exception e){
+              e.printStackTrace();
+          }
 
 
+      }).start();
+
+    }
+
+    public List<WebElement> lastMsg(ChromeDriver driver){
+        List <WebElement> lastMsgCheck = driver.findElements(By.cssSelector("div[class='Nm1g1 _22AX6']"));
+        return lastMsgCheck;
     }
 
     public void afterConnection(ChromeDriver driver) {
