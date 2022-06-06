@@ -137,20 +137,27 @@ public class WorkPanel extends JPanel {
     }
 
     public void msgCheck (ChromeDriver driver){
+//        new Thread()
         boolean msgCheck = false;
         boolean msgWasRead = false;
-        WebElement webElement=driver.findElement(By.cssSelector("span[data-testid='msg-dblcheck']"));
-        String value=webElement.getAttribute("aria-label");
+        List<WebElement> messageCheck = driver.findElements(By.className("_3K4-L"));
+        WebElement webElement=messageCheck.get(messageCheck.size()-1);
+        String className=webElement.getAttribute("class");
+//        String value=webElement.getAttribute("aria-label");
         while (!msgWasRead){
             if(value.equals("נמסרה")){
                 valueLabel.setText("has delivered");
+                valueLabel.setVisible(true);
             }
             else if (value.equals("נשלחה")){
                 valueLabel.setText("has sent");
+                valueLabel.setVisible(true);
             }
             else {
+                if (value.equals("נקראה")) {
+                System.out.println("done");
                 msgWasRead=true;
-                driver.close();
+                }
             }
         }
 
