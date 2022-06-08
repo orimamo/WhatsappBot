@@ -32,7 +32,7 @@ public class WorkPanel extends JPanel {
         this.setLayout(null);
         this.setRequestFocusEnabled(true);
         this.background = new ImageIcon("whatsapp2.jpeg");
-        JButton start = new JButton();
+        JButton start = new JButton("start");
         phoneNumber = new JTextField();
         text = new JTextField();
 
@@ -57,7 +57,7 @@ public class WorkPanel extends JPanel {
         text.setBounds(MIDDEL_OF_WINDOWS - 200, 150, 150, 50);
         text.setVisible(true);
         this.add(text);
-        JLabel valueLabel = new JLabel();
+        valueLabel = new JLabel("");
         valueLabel.setBounds(MIDDEL_OF_WINDOWS - 200, 400, 120, 50);
         this.add(valueLabel);
         valueLabel.setOpaque(true);
@@ -148,8 +148,12 @@ public class WorkPanel extends JPanel {
                     WebElement webElement=lastMsg1.get(lastMsg1.size() - 1).findElement(By.cssSelector("span[data-testid='msg-dblcheck']"));
                     value = webElement.getAttribute("aria-label");
                     if (value.equals(" נמסרה ")) {
+                        valueLabel.setText(value);
+                        repaint();
                         System.out.println("done1");
                     } else if (value.equals(" נשלחה ")) {
+                        valueLabel.setText(value);
+                        repaint();
                         System.out.println("done2");
                     } else {
                         if (value.equals(" נקראה ")) {
@@ -175,14 +179,17 @@ public class WorkPanel extends JPanel {
 //                Thread.sleep(10000);
             List<WebElement> webElement = driver.findElements(By.cssSelector("div[class='Nm1g1 _22AX6']"));
             System.out.println(webElement.size());
-            WebElement moshe = webElement.get(webElement.size() - 1).findElement(By.cssSelector("span"));
-            String s= moshe.getAttribute("aria-label");
-            System.out.println(s);
+            WebElement webElement1 = webElement.get(webElement.size() - 1).findElement(By.cssSelector("span"));
+            String s= webElement1.getAttribute("aria-label");
             if (!s.equals("את/ה:")) {
                 JOptionPane.showMessageDialog(null,
                         "new massage received",
                         "new massage received",
                         JOptionPane.INFORMATION_MESSAGE);
+                String a=webElement1.findElement(By.tagName("span[dir='rtl']")).getText();
+                System.out.println(a);
+                valueLabel.setText(a);
+                repaint();
                 driver.close();
                 result=true;
             }
