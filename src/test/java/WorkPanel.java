@@ -148,16 +148,17 @@ public class WorkPanel extends JPanel {
                     WebElement webElement=lastMsg1.get(lastMsg1.size() - 1).findElement(By.cssSelector("span[data-testid='msg-dblcheck']"));
                     value = webElement.getAttribute("aria-label");
                     if (value.equals(" נמסרה ")) {
-                        valueLabel.setText(value);
                         repaint();
-                        System.out.println("done1");
+                        valueLabel.setText(value);
+//                        System.out.println("done1");
                     } else if (value.equals(" נשלחה ")) {
                         valueLabel.setText(value);
                         repaint();
-                        System.out.println("done2");
+//                        System.out.println("done2");
                     } else {
                         if (value.equals(" נקראה ")) {
-                            System.out.println("done3");
+                            valueLabel.setText(value);
+//                            System.out.println("done3");
 //                            checkIfAnswer(driver);
                             msgWasRead = true;
                         }
@@ -175,10 +176,7 @@ public class WorkPanel extends JPanel {
     public void checkIfAnswer(ChromeDriver driver){
         boolean result=false;
         while (!result) {
-//            try {
-//                Thread.sleep(10000);
             List<WebElement> webElement = driver.findElements(By.cssSelector("div[class='Nm1g1 _22AX6']"));
-            System.out.println(webElement.size());
             WebElement webElement1 = webElement.get(webElement.size() - 1).findElement(By.cssSelector("span"));
             String s= webElement1.getAttribute("aria-label");
             if (!s.equals("את/ה:")) {
@@ -186,43 +184,52 @@ public class WorkPanel extends JPanel {
                         "new massage received",
                         "new massage received",
                         JOptionPane.INFORMATION_MESSAGE);
-                String a=webElement1.findElement(By.tagName("span[dir='rtl']")).getText();
+                String a=webElement.get(webElement.size() - 1).findElement(By.cssSelector("span[dir='rtl']")).getText();
                 System.out.println(a);
                 valueLabel.setText(a);
                 repaint();
                 driver.close();
                 result=true;
             }
-//
-//            } catch (Exception e) {
-//            }
+
         }
     }
 
     public List<WebElement> lastMsg(ChromeDriver driver) {
         List<WebElement> lastMsgCheck = driver.findElements(By.cssSelector("div[class='Nm1g1 _22AX6']"));
-        System.out.println(lastMsgCheck.get(0));
         return lastMsgCheck;
     }
 
     public void afterConnection(ChromeDriver driver) {
-        if (this.phoneNumber.getText().substring(0, 2).equals(FORMAT2)) {//i0jNr selectable-text copyable-text
-            driver.get("https://web.whatsapp.com/send?phone=972" +
-                    this.phoneNumber.getText().substring(1, this.phoneNumber.getText().length()));//את/ה:
-            copyMessage(driver);
-            sendMessage(driver);
-            if (msgCheck(driver)) {
-                checkIfAnswer(driver);
-            }
-        } else {
-            driver.get("https://web.whatsapp.com/send?phone=" + this.phoneNumber.getText());
-            copyMessage(driver);
-            sendMessage(driver);
-            if (msgCheck(driver)){
-                checkIfAnswer(driver);
-            }
+        new Thread(()->{
+            try {
+                if (this.phoneNumber.getText().substring(0, 2).equals(FORMAT2)) {//i0jNr selectable-text copyable-text
+                    driver.get("https://web.whatsapp.com/send?phone=972" +
+                            this.phoneNumber.getText().substring(1, this.phoneNumber.getText().length()));//את/ה:
+                    copyMessage(driver);
+                    sendMessage(driver);
+                    if (msgCheck(driver)) {
+                        repaint();
+                        checkIfAnswer(driver);
+                        Thread.sleep(10000);
+                    }
+                } else {
+                    driver.get("https://web.whatsapp.com/send?phone=" + this.phoneNumber.getText());
+                    copyMessage(driver);
+                    sendMessage(driver);
+                    if (msgCheck(driver)){
+                        repaint();
+                        checkIfAnswer(driver);
+                        Thread.sleep(10000);
+                    }
 
-        }
+                }
+
+            }catch (Exception e){
+                System.out.println(e);
+            }
+        }).start();
+
 
     }
 
