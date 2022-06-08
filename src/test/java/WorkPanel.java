@@ -173,16 +173,19 @@ public class WorkPanel extends JPanel {
         while (!result) {
 //            try {
 //                Thread.sleep(10000);
-                List<WebElement> webElement = driver.findElements(By.cssSelector("div[tabindex='-1']"));
-                String s=webElement.get(webElement.size()-1).getAttribute("class");
-                if (s.contains("message-in")) {
-                    JOptionPane.showMessageDialog(null,
-                            "new massage received",
-                            "new massage received",
-                            JOptionPane.INFORMATION_MESSAGE);
-                    driver.close();
-                    result=true;
-                }
+            List<WebElement> webElement = driver.findElements(By.cssSelector("div[class='Nm1g1 _22AX6']"));
+            System.out.println(webElement.size());
+            WebElement moshe = webElement.get(webElement.size() - 1).findElement(By.cssSelector("span"));
+            String s= moshe.getAttribute("aria-label");
+            System.out.println(s);
+            if (!s.equals("את/ה:")) {
+                JOptionPane.showMessageDialog(null,
+                        "new massage received",
+                        "new massage received",
+                        JOptionPane.INFORMATION_MESSAGE);
+                driver.close();
+                result=true;
+            }
 //
 //            } catch (Exception e) {
 //            }
@@ -191,13 +194,14 @@ public class WorkPanel extends JPanel {
 
     public List<WebElement> lastMsg(ChromeDriver driver) {
         List<WebElement> lastMsgCheck = driver.findElements(By.cssSelector("div[class='Nm1g1 _22AX6']"));
+        System.out.println(lastMsgCheck.get(0));
         return lastMsgCheck;
     }
 
     public void afterConnection(ChromeDriver driver) {
-        if (this.phoneNumber.getText().substring(0, 2).equals(FORMAT2)) {
+        if (this.phoneNumber.getText().substring(0, 2).equals(FORMAT2)) {//i0jNr selectable-text copyable-text
             driver.get("https://web.whatsapp.com/send?phone=972" +
-                    this.phoneNumber.getText().substring(1, this.phoneNumber.getText().length()));
+                    this.phoneNumber.getText().substring(1, this.phoneNumber.getText().length()));//את/ה:
             copyMessage(driver);
             sendMessage(driver);
             if (msgCheck(driver)) {
@@ -237,4 +241,4 @@ public class WorkPanel extends JPanel {
         return validPhoneNum;
     }
 
-}//
+}
